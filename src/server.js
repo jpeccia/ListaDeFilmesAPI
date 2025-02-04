@@ -10,6 +10,7 @@ import {
   logPerformance,
 } from "./middleware/logMiddleware.js";
 import filmeRoutes from "./routes/filmeRoutes.js";
+import logRoutes from "./routes/logRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -36,6 +37,7 @@ app.use(limiter);
 
 // Rotas
 app.use("/filme", filmeRoutes);
+app.use("/logs", logRoutes);
 
 // Middleware de captura de erros
 app.use(logErro);

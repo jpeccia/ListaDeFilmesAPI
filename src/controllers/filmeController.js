@@ -5,17 +5,53 @@ import { v4 as uuidv4 } from "uuid";
 export const listarFilmes = async (req, res) => {
   try {
     const { estado, page = 1, limit = 10 } = req.query;
-    const filtro = estado ? { estado } : {};
 
+    // Converte page e limit para números inteiros
+    const pageInt = parseInt(page, 10);
+    const limitInt = parseInt(limit, 10);
+
+    // Cria o filtro, se o parâmetro estado for informado
+    const filtro = {};
+    if (estado) {
+      const estadosValidos = [
+        "A assistir",
+        "Assistido",
+        "Avaliado",
+        "Recomendado",
+        "Não recomendado",
+      ];
+      if (!estadosValidos.includes(estado)) {
+        return res.status(400).json({
+          mensagem:
+            "Estado inválido. Estados permitidos: A assistir, Assistido, Avaliado, Recomendado, Não recomendado",
+        });
+      }
+      filtro.estado = estado;
+    }
+
+    // Conta o total de documentos que correspondem ao filtro
+    const totalFilmes = await FilmeModel.countDocuments(filtro);
+
+    // Busca os filmes com paginação
     const filmes = await FilmeModel.find(filtro)
-      .skip((page - 1) * limit)
-      .limit(parseInt(limit));
+      .skip((pageInt - 1) * limitInt)
+      .limit(limitInt);
 
-    res.json(filmes);
+    // Calcula o número total de páginas
+    const totalPaginas = Math.ceil(totalFilmes / limitInt);
+
+    // Retorna os dados com as informações de paginação
+    res.json({
+      totalFilmes,
+      paginaAtual: pageInt,
+      totalPaginas,
+      filmes,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ mensagem: "Erro ao buscar filmes", erro: error.message });
+    res.status(500).json({
+      mensagem: "Erro ao buscar filmes",
+      erro: error.message,
+    });
   }
 };
 
@@ -115,7 +151,10 @@ export const atualizarEstado = async (req, res) => {
     });
 
     await filme.save();
-    res.json({ mensagem: "Estado atualizado com sucesso!", filme });
+    res.json({
+      mensagem: `Estado atualizado para ${estado} com sucesso!`,
+      filme,
+    });
   } catch (error) {
     res
       .status(500)
