@@ -2,6 +2,23 @@ import FilmeModel from "../models/filmeModel.js";
 import { buscarFilmeTMDB } from "../services/tmdbService.js";
 import { v4 as uuidv4 } from "uuid";
 
+export const listarFilmes = async (req, res) => {
+  try {
+    const { estado, page = 1, limit = 10 } = req.query;
+    const filtro = estado ? { estado } : {};
+
+    const filmes = await FilmeModel.find(filtro)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    res.json(filmes);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ mensagem: "Erro ao buscar filmes", erro: error.message });
+  }
+};
+
 export const adicionarFilme = async (req, res) => {
   const { titulo } = req.body;
 
