@@ -4,7 +4,11 @@ import mongoose from "mongoose";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-import logMiddleware from "./middleware/logMiddleware.js";
+import {
+  logRequisicao,
+  logErro,
+  logPerformance,
+} from "./middleware/logMiddleware.js";
 import filmeRoutes from "./routes/filmeRoutes.js";
 
 dotenv.config();
@@ -21,12 +25,20 @@ mongoose
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(logMiddleware);
 
+// Middleware de logs
+app.use(logRequisicao);
+app.use(logPerformance);
+
+// Proteção contra DDoS
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);
 
+// Rotas
 app.use("/filme", filmeRoutes);
+
+// Middleware de captura de erros
+app.use(logErro);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🔥 Servidor rodando na porta ${PORT}`));
