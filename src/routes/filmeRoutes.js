@@ -10,6 +10,15 @@ import {
 } from "../controllers/filmeController.js";
 
 const router = express.Router();
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     BasicAuth:
+ *       type: http
+ *       scheme: basic
+ *       description: Autenticação Básica com usuário e senha
+ */
 
 router.post("/", auth, adicionarFilme);
 router.get("/", auth, listarFilmes);

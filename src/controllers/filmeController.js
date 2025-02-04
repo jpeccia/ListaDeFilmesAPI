@@ -2,6 +2,68 @@ import FilmeModel from "../models/filmeModel.js";
 import { buscarFilmeTMDB } from "../services/tmdbService.js";
 import { v4 as uuidv4 } from "uuid";
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Filmes
+ *     description: Operações relacionadas a filmes
+ */
+
+/**
+ * @swagger
+ * /filme:
+ *   get:
+ *     summary: Lista filmes com paginação e filtragem por estado.
+ *     tags: [Filmes]
+ *     security:
+ *       - BasicAuth: []
+ *     parameters:
+ *       - name: estado
+ *         in: query
+ *         description: Estado do filme para filtragem (A assistir, Assistido, Avaliado, Recomendado, Não recomendado)
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: page
+ *         in: query
+ *         description: Número da página para a paginação
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Número de itens por página
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: Lista de filmes com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalFilmes:
+ *                   type: integer
+ *                   description: Total de filmes encontrados.
+ *                 paginaAtual:
+ *                   type: integer
+ *                   description: Página atual.
+ *                 totalPaginas:
+ *                   type: integer
+ *                   description: Total de páginas.
+ *                 filmes:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Filme'
+ *       400:
+ *         description: Estado inválido informado.
+ *       500:
+ *         description: Erro ao buscar filmes.
+ */
 export const listarFilmes = async (req, res) => {
   try {
     const { estado, page = 1, limit = 10 } = req.query;
@@ -55,6 +117,33 @@ export const listarFilmes = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /filme/{id}:
+ *   get:
+ *     summary: Obtém os detalhes de um filme pelo ID.
+ *     tags: [Filmes]
+ *     security:
+ *       - BasicAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do filme
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Detalhes do filme.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Filme'
+ *       404:
+ *         description: Filme não encontrado.
+ *       500:
+ *         description: Erro ao buscar filme.
+ */
 export const detalhesFilme = async (req, res) => {
   try {
     const filme = await FilmeModel.findById(req.params.id);
@@ -69,6 +158,39 @@ export const detalhesFilme = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /filme:
+ *   post:
+ *     summary: Adiciona um novo filme.
+ *     tags: [Filmes]
+ *     security:
+ *       - BasicAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               titulo:
+ *                 type: string
+ *                 description: Título do filme
+ *                 example: Inception
+ *     responses:
+ *       201:
+ *         description: Filme adicionado com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Filme'  # Agora o modelo existe!
+ *       400:
+ *         description: Título do filme é obrigatório ou inválido.
+ *       404:
+ *         description: Filme não encontrado na TMDB.
+ *       500:
+ *         description: Erro ao adicionar filme.
+ */
 export const adicionarFilme = async (req, res) => {
   const { titulo } = req.body;
 
@@ -108,6 +230,38 @@ export const adicionarFilme = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /filme/{id}/estado:
+ *   put:
+ *     summary: Atualiza o estado de um filme.
+ *     tags: [Filmes]
+ *     security:
+ *       - BasicAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do filme
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: estado
+ *         in: body
+ *         description: Novo estado do filme
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [A assistir, Assistido, Avaliado, Recomendado, Não recomendado]
+ *     responses:
+ *       200:
+ *         description: Estado atualizado com sucesso.
+ *       400:
+ *         description: Estado inválido ou transição inválida de estado.
+ *       404:
+ *         description: Filme não encontrado.
+ *       500:
+ *         description: Erro ao atualizar estado.
+ */
 export const atualizarEstado = async (req, res) => {
   const { id } = req.params;
   const { estado } = req.body;
@@ -162,6 +316,39 @@ export const atualizarEstado = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /filme/{id}/avaliar:
+ *   put:
+ *     summary: Avalia um filme.
+ *     tags: [Filmes]
+ *     security:
+ *       - BasicAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do filme
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: nota
+ *         in: body
+ *         description: Nota para avaliação do filme (0 a 5)
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 0
+ *           maximum: 5
+ *     responses:
+ *       200:
+ *         description: Filme avaliado com sucesso.
+ *       400:
+ *         description: Nota inválida ou filme não assistido.
+ *       404:
+ *         description: Filme não encontrado.
+ *       500:
+ *         description: Erro ao avaliar filme.
+ */
 export const avaliarFilme = async (req, res) => {
   const { id } = req.params;
   const { nota } = req.body;
@@ -197,6 +384,40 @@ export const avaliarFilme = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /filme/{id}/historico:
+ *   get:
+ *     summary: Retorna o histórico de ações de um filme.
+ *     tags: [Filmes]
+ *     security:
+ *       - BasicAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do filme
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Histórico do filme retornado com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   acao:
+ *                     type: string
+ *                   timestamp:
+ *                     type: string
+ *       404:
+ *         description: Filme não encontrado.
+ *       500:
+ *         description: Erro ao buscar histórico.
+ */
 export const historicoFilme = async (req, res) => {
   try {
     const filme = await FilmeModel.findById(req.params.id);
@@ -210,3 +431,50 @@ export const historicoFilme = async (req, res) => {
       .json({ mensagem: "Erro ao buscar histórico", erro: error.message });
   }
 };
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Filme:
+ *       type: object
+ *       required:
+ *         - titulo
+ *         - estado
+ *       properties:
+ *         id_filme:
+ *           type: string
+ *           description: ID único do filme
+ *         titulo:
+ *           type: string
+ *           description: Título do filme
+ *         sinopse:
+ *           type: string
+ *           description: Sinopse do filme
+ *         ano:
+ *           type: string
+ *           description: Ano de lançamento do filme
+ *         genero:
+ *           type: string
+ *           description: Gênero do filme
+ *         estado:
+ *           type: string
+ *           description: Estado do filme (A assistir, Assistido, Avaliado, etc.)
+ *         nota:
+ *           type: integer
+ *           description: Nota de avaliação do filme
+ *           minimum: 0
+ *           maximum: 5
+ *         historico:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               acao:
+ *                 type: string
+ *                 description: Ação realizada no filme
+ *               timestamp:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Data e hora da ação
+ */

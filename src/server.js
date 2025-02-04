@@ -15,6 +15,33 @@ import logRoutes from "./routes/logRoutes.js";
 dotenv.config();
 const app = express();
 
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Lista de Filmes API - Carefy",
+      version: "1.0.0",
+      description:
+        "API para gerenciamento de filmes assistidos, avaliados e recomendados. Com integração de logs",
+    },
+    servers: [
+      {
+        url: "http://localhost:3000",
+        description: "Servidor Local",
+      },
+    ],
+  },
+  // Certifique-se de incluir os caminhos dos arquivos onde as anotações estão presentes:
+  apis: ["./src/routes/*.js", "./src/controllers/*.js"],
+};
+
+const specs = swaggerJsDoc(swaggerOptions);
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
+
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
