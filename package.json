@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/server.js",
-    "test": "jest"
+    "test": "jest --setupFilesAfterEnv=./tests/setup.js"
   },
   "keywords": [],
   "author": "",
