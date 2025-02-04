@@ -19,6 +19,20 @@ export const listarFilmes = async (req, res) => {
   }
 };
 
+export const detalhesFilme = async (req, res) => {
+  try {
+    const filme = await FilmeModel.findById(req.params.id);
+    if (!filme) {
+      return res.status(404).json({ mensagem: "Filme não encontrado" });
+    }
+    res.json(filme);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ mensagem: "Erro ao buscar filme", erro: error.message });
+  }
+};
+
 export const adicionarFilme = async (req, res) => {
   const { titulo } = req.body;
 

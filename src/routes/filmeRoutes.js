@@ -4,12 +4,18 @@ import {
   atualizarEstado,
   avaliarFilme,
   historicoFilme,
+  adicionarFilme,
+  listarFilmes,
+  detalhesFilme
 } from "../controllers/filmeController.js";
 
 const router = express.Router();
 
-router.put("/:id/estado", auth, atualizarEstado);
-router.post("/:id/avaliar", auth, avaliarFilme);
-router.get("/:id/historico", auth, historicoFilme);
+router.post('/', auth, adicionarFilme);
+router.get('/', auth, listarFilmes);
+router.get('/:id', auth, detalhesFilme);
+router.put('/:id/estado', auth, atualizarEstado);
+router.post('/:id/avaliar', auth, avaliarFilme);
+router.get('/:id/historico', auth, historicoFilme);
 
 export default router;
