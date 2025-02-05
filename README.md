@@ -61,7 +61,7 @@ nodemon ./src/server.js
 ```
 
 ### **5- Acesse a Documentação Swagger**
-📝 **URL(Endpoint):** [/docs](/docs)  
+📝 **URL(Endpoint):** [/docs](http://localhost:3000/docs)  
 
 ---
 
