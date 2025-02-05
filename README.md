@@ -30,13 +30,13 @@ Esta aplicação permite **adicionar, listar, avaliar e organizar filmes** de ma
 
 ## 📺 Instalação e Configuração
 
-### **1⃣ Clone o Repositório**
+### **1- Clone o Repositório**
 ```bash
 git clone https://github.com/jpeccia/ListaDeFilmesAPI_carefy
 cd ListaDeFilmesAPI_carefy
 ```
 
-### **2⃣ Configure as Variáveis de Ambiente**
+### **2- Configure as Variáveis de Ambiente**
 Crie um arquivo `.env` na raiz do projeto e adicione:
 ```env
 PORT=3000
@@ -46,12 +46,12 @@ ADMIN_USER=admin
 ADMIN_PASSWORD=senha123
 ```
 
-### **3⃣ Instale as Dependências**
+### **3- Instale as Dependências**
 ```bash
 npm install
 ```
 
-### **4⃣ Execute a API**
+### **4- Execute a API**
 ```bash
 npm start
 ```
