@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 const FilmeSchema = new mongoose.Schema({
-  id_filme: { type: String, required: true, unique: true },
+  _id: { type: String, default: uuidv4 },
   titulo: { type: String, required: true },
   sinopse: String,
   ano: String,

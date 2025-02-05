@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/server.js",
-    "test": "jest --setupFilesAfterEnv=./tests/setup.js"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "helmet": "^8.0.0",
     "listadefilmesapi_carefy": "file:",
     "mongoose": "^8.9.6",
+    "node-mocks-http": "^1.16.2",
     "sequelize": "^6.37.5",
     "sqlite3": "^5.1.7",
     "swagger-jsdoc": "^6.2.8",
@@ -32,16 +33,5 @@
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "supertest": "^7.0.0"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    },
-    "testEnvironment": "node",
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "node"
-    ]
   }
 }
