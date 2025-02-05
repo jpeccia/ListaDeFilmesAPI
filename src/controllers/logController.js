@@ -7,7 +7,7 @@ import LogModel from "../models/logModel.js";
  *     BasicAuth:
  *       type: http
  *       scheme: basic
- *       description: Autenticação básica para acessar os logs
+ *       description: Autenticação básica
  *
  *   schemas:
  *     Log:

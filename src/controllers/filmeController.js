@@ -234,7 +234,7 @@ export const adicionarFilme = async (req, res) => {
  * @swagger
  * /filme/{id}/estado:
  *   put:
- *     summary: Atualiza o estado de um filme.
+ *     summary: Atualiza o estado de um filme. (A assistir, Assistido, Avaliado, Recomendado, Não recomendado)
  *     tags: [Filmes]
  *     security:
  *       - BasicAuth: []
@@ -245,13 +245,17 @@ export const adicionarFilme = async (req, res) => {
  *         required: true
  *         schema:
  *           type: string
- *       - name: estado
- *         in: body
- *         description: Novo estado do filme
- *         required: true
- *         schema:
- *           type: string
- *           enum: [A assistir, Assistido, Avaliado, Recomendado, Não recomendado]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               estado:
+ *                 type: string
+ *                 enum: [A assistir, Assistido, Avaliado, Recomendado, Não recomendado]
+ *                 description: Novo estado do filme
  *     responses:
  *       200:
  *         description: Estado atualizado com sucesso.
@@ -264,7 +268,13 @@ export const adicionarFilme = async (req, res) => {
  */
 export const atualizarEstado = async (req, res) => {
   const { id } = req.params;
-  const { estado } = req.body;
+  let { estado } = req.body;
+
+  // Normaliza entrada (remove espaços extras)
+  if (typeof estado === "string") {
+    estado = estado.trim();
+  }
+
   const estadosValidos = [
     "A assistir",
     "Assistido",
@@ -274,13 +284,14 @@ export const atualizarEstado = async (req, res) => {
   ];
 
   if (!estadosValidos.includes(estado)) {
-    return res.status(400).json({ mensagem: "Estado inválido" });
+    return res.status(400).json({ mensagem: "Estado inválido." });
   }
 
   try {
     const filme = await FilmeModel.findById(id);
-    if (!filme)
-      return res.status(404).json({ mensagem: "Filme não encontrado" });
+    if (!filme) {
+      return res.status(404).json({ mensagem: "Filme não encontrado." });
+    }
 
     // Validações de transição de estados
     if (estado === "Avaliado" && filme.estado !== "Assistido") {
@@ -312,7 +323,7 @@ export const atualizarEstado = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ mensagem: "Erro ao atualizar estado", erro: error.message });
+      .json({ mensagem: "Erro ao atualizar estado.", erro: error.message });
   }
 };
 
@@ -320,7 +331,7 @@ export const atualizarEstado = async (req, res) => {
  * @swagger
  * /filme/{id}/avaliar:
  *   put:
- *     summary: Avalia um filme.
+ *     summary: Avalia um filme (0 a 5).
  *     tags: [Filmes]
  *     security:
  *       - BasicAuth: []
@@ -331,14 +342,18 @@ export const atualizarEstado = async (req, res) => {
  *         required: true
  *         schema:
  *           type: string
- *       - name: nota
- *         in: body
- *         description: Nota para avaliação do filme (0 a 5)
- *         required: true
- *         schema:
- *           type: integer
- *           minimum: 0
- *           maximum: 5
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nota:
+ *                 type: integer
+ *                 minimum: 0
+ *                 maximum: 5
+ *                 description: Nota para avaliação do filme (0 a 5)
  *     responses:
  *       200:
  *         description: Filme avaliado com sucesso.
@@ -351,16 +366,22 @@ export const atualizarEstado = async (req, res) => {
  */
 export const avaliarFilme = async (req, res) => {
   const { id } = req.params;
-  const { nota } = req.body;
+  let { nota } = req.body;
 
-  if (nota < 0 || nota > 5) {
-    return res.status(400).json({ mensagem: "A nota deve ser entre 0 e 5." });
+  // Converter nota para número para evitar problemas com strings ("3")
+  nota = Number(nota);
+
+  if (isNaN(nota) || nota < 0 || nota > 5) {
+    return res
+      .status(400)
+      .json({ mensagem: "A nota deve ser um número entre 0 e 5." });
   }
 
   try {
     const filme = await FilmeModel.findById(id);
-    if (!filme)
+    if (!filme) {
       return res.status(404).json({ mensagem: "Filme não encontrado" });
+    }
 
     if (filme.estado !== "Assistido") {
       return res.status(400).json({
