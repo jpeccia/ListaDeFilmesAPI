@@ -463,7 +463,7 @@ export const historicoFilme = async (req, res) => {
  *         - titulo
  *         - estado
  *       properties:
- *         id_:
+ *         _id:
  *           type: string
  *           description: ID único do filme
  *         titulo:
