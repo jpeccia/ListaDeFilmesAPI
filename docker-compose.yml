@@ -1,7 +1,34 @@
 version: "3.8"
+
 services:
+  api:
+    build: .
+    container_name: api-carefy-filmes
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT}
+      - TMDB_API_KEY=${TMDB_API_KEY}
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    networks:
+      - app-network
 
   mongo:
     image: mongo
+    container_name: mongo-filmes
     ports:
       - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  mongo-data:
