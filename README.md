@@ -40,7 +40,7 @@ cd ListaDeFilmesAPI_carefy
 Crie um arquivo `.env` na raiz do projeto e adicione:
 ```env
 PORT=3000
-MONGO_URI=mongodb://localhost:27017/filmes
+MONGO_URI=mongodb://mongo:27017/filmes
 TMDB_API_KEY=SUA_CHAVE_TMDB
 ADMIN_USER=admin
 ADMIN_PASSWORD=senha123
