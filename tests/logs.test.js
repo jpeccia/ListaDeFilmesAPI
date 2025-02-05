@@ -11,7 +11,9 @@ describe("Registro de Logs", () => {
         `Basic ${Buffer.from("admin:senha123").toString("base64")}`
       );
 
-    // 🔹 Buscar apenas logs do tipo "request"
+    // 🔹 Aguarda um tempo para que o log seja salvo no banco
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const logs = await LogModel.find({ tipo: "request" });
 
     expect(logs.length).toBeGreaterThan(0);
@@ -30,7 +32,9 @@ describe("Registro de Logs", () => {
         `Basic ${Buffer.from("admin:senha123").toString("base64")}`
       );
 
-    // 🔹 Buscar logs do tipo "error"
+    // 🔹 Aguarda um tempo para que o log seja salvo no banco
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     const logs = await LogModel.find({ tipo: "error" });
 
     expect(logs.length).toBeGreaterThan(0);
