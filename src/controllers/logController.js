@@ -31,13 +31,13 @@ import LogModel from "../models/logModel.js";
  *           description: URL da requisição ou erro
  *         status:
  *           type: integer
- *           description: Código de status HTTP da resposta (ex: 200, 404, 500)
+ *           description: "Código de status HTTP da resposta (ex: 200, 404, 500)"
  *         responseTime:
  *           type: string
- *           description: Tempo de resposta da requisição (em milissegundos)
+ *           description: "Tempo de resposta da requisição (em milissegundos)"
  *         mensagem:
  *           type: string
- *           description: Mensagem detalhada sobre o log (ex: erro ou descrição da requisição)
+ *           description: "Mensagem detalhada sobre o log (ex: erro ou descrição da requisição)"
  *         timestamp:
  *           type: string
  *           format: date-time

@@ -66,6 +66,12 @@ app.use(limiter);
 app.use("/filme", filmeRoutes);
 app.use("/logs", logRoutes);
 
+app.use((req, res, next) => {
+  const erro = new Error("Erro interno do servidor");
+  erro.status = 500;
+  next(erro);
+});
+
 // Middleware de captura de erros
 app.use(logErro);
 
