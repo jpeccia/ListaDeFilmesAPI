@@ -97,74 +97,20 @@ Agora a API e o banco de dados estão rodando! 🎉
 
 Execute os testes unitários e de integração:
 ```bash
-npm test ./tests/estadoFilme.test.js
-```
-Saída esperada:
-```
- PASS  tests/estadoFilme.test.js
-  Testes de Validação de Estados do Filme
-    √ Não deve permitir avaliar um filme antes de assisti-lo (19 ms)
-    √ Não deve permitir recomendar um filme antes de ser avaliado (17 ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       2 passed, 2 total
-```
-
-```bash
-npm test ./tests/integracao.test.js
-```
-Saída esperada:
-```
- PASS  tests/integracao.test.js
-  Testes de Integração da API
-    √ Deve adicionar um filme e retornar estado inicial correto (569 ms)
-    √ Deve permitir alterar estado para "Assistido" (22 ms)
-    √ Deve permitir avaliar o filme somente após assistir (17 ms)
-    √ Deve permitir recomendar o filme somente após avaliação (17 ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       4 passed, 4 total
-```
-
-```bash
-npm test ./tests/logController.test.js
-```
-Saída esperada:
-```
- PASS  tests/logController.test.js
-  Endpoint de Logs
-    √ deve retornar os logs registrados (GET /logs) (270 ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       1 passed, 1 total
-```
-
-```bash
-npm test ./tests/logs.test.js
+npm test
 ```
 Saída esperada:
 ```
  PASS  tests/logs.test.js
-  Registro de Logs
-    √ Deve registrar um log ao acessar um endpoint (145 ms)
-    √ Deve registrar um log de erro ao acessar uma rota inexistente (15 ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       2 passed, 2 total
-```
-
-```bash
-npm test ./tests/tmdb.test.js
-```
-Saída esperada:
-```
+ PASS  tests/integracao.test.js
+ PASS  tests/estadoFilme.test.js
+ PASS  tests/logController.test.js
  PASS  tests/tmdb.test.js
-  Integração com a API TMDB
-    √ Deve buscar um filme corretamente (3 ms)
-    √ Deve retornar null para um filme inexistente
-
-Test Suites: 1 passed, 1 total
-Tests:       2 passed, 2 total
+Test Suites: 5 passed, 5 total
+Tests:       11 passed, 11 total
+Snapshots:   0 total
+Time:        8.166 s, estimated 9 s
+🎉 100% dos testes passaram! 🚀
 ```
 
 ---
