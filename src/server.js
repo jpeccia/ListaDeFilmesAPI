@@ -18,6 +18,5 @@ if (process.env.NODE_ENV !== "test") {
   });
 }
 
-// Exportar a instância do servidor para os testes
 export { server };
 export default app;

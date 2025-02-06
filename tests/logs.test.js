@@ -11,7 +11,6 @@ describe("Registro de Logs", () => {
         `Basic ${Buffer.from("admin:senha123").toString("base64")}`
       );
 
-    // 🔹 Aguarda um tempo para que o log seja salvo no banco
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     const logs = await LogModel.find({ tipo: "request" });
@@ -32,7 +31,6 @@ describe("Registro de Logs", () => {
         `Basic ${Buffer.from("admin:senha123").toString("base64")}`
       );
 
-    // 🔹 Aguarda um tempo para que o log seja salvo no banco
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const logs = await LogModel.find({ tipo: "error" });

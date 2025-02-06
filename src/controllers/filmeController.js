@@ -68,11 +68,9 @@ export const listarFilmes = async (req, res) => {
   try {
     const { estado, page = 1, limit = 10 } = req.query;
 
-    // Converte page e limit para números inteiros
     const pageInt = parseInt(page, 10);
     const limitInt = parseInt(limit, 10);
 
-    // Cria o filtro, se o parâmetro estado for informado
     const filtro = {};
     if (estado) {
       const estadosValidos = [
@@ -91,18 +89,14 @@ export const listarFilmes = async (req, res) => {
       filtro.estado = estado;
     }
 
-    // Conta o total de documentos que correspondem ao filtro
     const totalFilmes = await FilmeModel.countDocuments(filtro);
 
-    // Busca os filmes com paginação
     const filmes = await FilmeModel.find(filtro)
       .skip((pageInt - 1) * limitInt)
       .limit(limitInt);
 
-    // Calcula o número total de páginas
     const totalPaginas = Math.ceil(totalFilmes / limitInt);
 
-    // Retorna os dados com as informações de paginação
     res.json({
       totalFilmes,
       paginaAtual: pageInt,
@@ -270,7 +264,6 @@ export const atualizarEstado = async (req, res) => {
   const { id } = req.params;
   let { estado } = req.body;
 
-  // Normaliza entrada (remove espaços extras)
   if (typeof estado === "string") {
     estado = estado.trim();
   }
@@ -293,7 +286,6 @@ export const atualizarEstado = async (req, res) => {
       return res.status(404).json({ mensagem: "Filme não encontrado." });
     }
 
-    // Validações de transição de estados
     if (estado === "Avaliado" && filme.estado !== "Assistido") {
       return res.status(400).json({
         mensagem: "O filme deve ser assistido antes de ser avaliado.",
@@ -368,7 +360,6 @@ export const avaliarFilme = async (req, res) => {
   const { id } = req.params;
   let { nota } = req.body;
 
-  // Converter nota para número para evitar problemas com strings ("3")
   nota = Number(nota);
 
   if (isNaN(nota) || nota < 0 || nota > 5) {

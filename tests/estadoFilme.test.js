@@ -7,7 +7,6 @@ describe("Testes de Validação de Estados do Filme", () => {
   beforeAll(async () => {
     console.log("✅ Criando um filme para os testes...");
 
-    // Criando um novo filme para testar mudanças de estado
     const res = await request(app)
       .post("/filme")
       .set(
@@ -21,7 +20,6 @@ describe("Testes de Validação de Estados do Filme", () => {
     filmeId = res.body._id;
     console.log("✅ Filme criado com ID:", filmeId);
 
-    // 🔹 Validação extra: garantir que o filme foi salvo antes de rodar os testes
     const checkFilme = await request(app)
       .get(`/filme/${filmeId}`)
       .set(

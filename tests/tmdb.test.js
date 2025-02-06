@@ -4,7 +4,6 @@ jest.mock("../src/services/tmdbService.js");
 
 describe("Integração com a API TMDB", () => {
   it("Deve buscar um filme corretamente", async () => {
-    // Mock da função buscarFilmeTMDB
     buscarFilmeTMDB.mockResolvedValue({
       title: "Inception",
       overview: "Um filme sobre sonhos...",
@@ -19,7 +18,6 @@ describe("Integração com a API TMDB", () => {
   });
 
   it("Deve retornar null para um filme inexistente", async () => {
-    // Mock da função buscarFilmeTMDB para retornar null
     buscarFilmeTMDB.mockResolvedValue(null);
 
     const filme = await buscarFilmeTMDB("Um Filme que Não Existe 12345");

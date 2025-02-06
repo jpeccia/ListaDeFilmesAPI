@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { server } from "../src/server.js"; // Importa a instância do servidor corretamente
+import { server } from "../src/server.js";
 
 dotenv.config({ path: ".env.test" });
 
@@ -14,7 +14,6 @@ afterAll(async () => {
   await mongoose.connection.dropDatabase();
   await mongoose.connection.close();
 
-  // Aguarda o fechamento correto do servidor
   if (server) {
     await new Promise((resolve) => server.close(resolve));
     console.log("✅ Servidor de testes fechado!");

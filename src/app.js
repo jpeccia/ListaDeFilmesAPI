@@ -18,7 +18,6 @@ dotenv.config();
 
 const app = express();
 
-// Configuração do Swagger
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -36,29 +35,24 @@ const swaggerOptions = {
 const specs = swaggerJsDoc(swaggerOptions);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-// Middlewares de segurança e logs
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(logRequisicao);
 app.use(logPerformance);
 
-// Proteção contra DDoS
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use(limiter);
 
-// Rotas
 app.use("/filme", filmeRoutes);
 app.use("/logs", logRoutes);
 
-// Middleware de erro personalizado
 app.use((req, res, next) => {
   const erro = new Error("Erro interno do servidor");
   erro.status = 500;
   next(erro);
 });
 
-// Middleware de captura de erros
 app.use(logErro);
 
 export default app;
