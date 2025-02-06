@@ -322,7 +322,7 @@ export const atualizarEstado = async (req, res) => {
 /**
  * @swagger
  * /filme/{id}/avaliar:
- *   put:
+ *   post:
  *     summary: Avalia um filme (0 a 5).
  *     tags: [Filmes]
  *     security:
