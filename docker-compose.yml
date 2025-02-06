@@ -34,3 +34,4 @@ networks:
 
 volumes:
   mongo-data:
+  mongo-test-data:

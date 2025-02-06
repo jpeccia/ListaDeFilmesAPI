@@ -6,7 +6,7 @@ dotenv.config({ path: ".env.test" });
 
 beforeAll(async () => {
   console.log("✅ Conectando ao banco de testes...");
-  await mongoose.connect(process.env.MONGO_URI, { dbName: "testDB" });
+  await mongoose.connect(process.env.MONGO_URL, { dbName: "testdb" });
 });
 
 afterAll(async () => {
