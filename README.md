@@ -1,4 +1,4 @@
-# 🎬 API de Gerenciamento de Filmes - Desafio Carefy
+# 🎬 API de Gerenciamento de Filmes
 
 Bem-vindo à API de Gerenciamento de Filmes! 🎥✨  
 Esta aplicação permite **adicionar, listar, avaliar e organizar filmes** de maneira intuitiva e eficiente, garantindo **logs detalhados, integração com a API externa TMDB e uma arquitetura escalável**.
@@ -121,6 +121,6 @@ Time:        8.166 s, estimated 9 s
 🌟 **LinkedIn:** [linkedin.com/in/joao-peccia](https://www.linkedin.com/in/joao-peccia/)  
 🚀 **GitHub:** [github.com/jpeccia](https://github.com/jpeccia)  
 
-Feito com ❤️ para o desafio **Carefy**!  
+Feito com ❤️!  
 ```
 
